@@ -325,6 +325,10 @@ html {
 	background-image: url("images/notpregnant.png") !important;
 }
 
+.slot-blacklist {
+	background-image: url("images/blacklist.png") !important;
+}
+
 .date-sticky {
 	position: relative;
 	transition: all 0.2s ease 0s;

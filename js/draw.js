@@ -228,17 +228,24 @@ function drawSlots(element, findElement) {
 		divSlotDetails.innerHTML = `&nbsp;`;
 		divSlot.appendChild(divSlotDetails);
 	}
-	if (element.hasOwnProperty("ДляБеременных") && element.ДляБеременных) {
+	if (element.hasOwnProperty("ЧерныйСписок") && element.ЧерныйСписок) {
 		divSlotDetails = document.createElement("div");
-		divSlotDetails.className = `slot-type slot-pregnant`;
+		divSlotDetails.className = `slot-type slot-blacklist`;
 		divSlotDetails.innerHTML = `&nbsp;`;
 		divSlot.appendChild(divSlotDetails);
-	}
-	if (element.hasOwnProperty("ДляБеременных") && !element.ДляБеременных) {
-		divSlotDetails = document.createElement("div");
-		divSlotDetails.className = `slot-type slot-not-pregnant`;
-		divSlotDetails.innerHTML = `&nbsp;`;
-		divSlot.appendChild(divSlotDetails);
+	} else {
+		if (element.hasOwnProperty("ДляБеременных") && element.ДляБеременных) {
+			divSlotDetails = document.createElement("div");
+			divSlotDetails.className = `slot-type slot-pregnant`;
+			divSlotDetails.innerHTML = `&nbsp;`;
+			divSlot.appendChild(divSlotDetails);
+		}
+		if (element.hasOwnProperty("ДляБеременных") && !element.ДляБеременных) {
+			divSlotDetails = document.createElement("div");
+			divSlotDetails.className = `slot-type slot-not-pregnant`;
+			divSlotDetails.innerHTML = `&nbsp;`;
+			divSlot.appendChild(divSlotDetails);
+		}
 	}
 	if (element.hasOwnProperty("Страховка") && element.Страховка) {
 		divSlotDetails = document.createElement("div");

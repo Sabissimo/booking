@@ -30,7 +30,7 @@ git show 1c0d697^:js/init.json         > js/init.json
 git show 1c0d697^:js/update_cells.json > js/update_cells.json
 ```
 
-Those snapshots predate several fields (`ИдентификаторСтатуса`, `ЭтоПервичныйПациент`, `ДляБеременных`, `styles`, `compact`) and use the older `clinic.png`-style booking-type image names rather than today's `slot_type_*.png` — extend them by hand when working on newer features. **In production these fixture reads never fire usefully; the host drives everything through `doctra_call`.** Do not add app logic that depends on the JSON files existing.
+Those snapshots predate several fields (`ИдентификаторСтатуса`, `ЭтоПервичныйПациент`, `ДляБеременных`, `ЧерныйСписок`, `styles`, `compact`) and use the older `clinic.png`-style booking-type image names rather than today's `slot_type_*.png` — extend them by hand when working on newer features. **In production these fixture reads never fire usefully; the host drives everything through `doctra_call`.** Do not add app logic that depends on the JSON files existing.
 
 ## Host ⇄ page contract
 
@@ -67,6 +67,10 @@ Slot colours and icons are **not** in `style.css`. `init()` synthesises CSS rule
 - `.json-<name>-firsttime` — first-time-patient background (statuses only)
 
 `drawSlots` then applies `json-<Статус>`, `json-<ТипБрони>`, `json-<Страховка>` and the two variants. The `--slot*Color` variables and `.slot-booked`/`.slot-arrived`/… rules in `style.css` are fallbacks for the `ИдентификаторСтатуса` path, not the primary mechanism. Adding a status or insurance is a host-config change plus an image, never a stylesheet edit.
+
+Two badges are the exception and are **hardcoded**, not host-configurable: `ЧерныйСписок` (`.slot-blacklist` → `images/blacklist.png`) and `ДляБеременных` (`.slot-pregnant` / `.slot-not-pregnant`). Their filenames live in `style.css`, and all three PNGs are exactly 12×12 to match the `.slot-type` box — there is no `background-size`, so a replacement at another size will tile or crop.
+
+They are mutually exclusive, blacklist first: a truthy `ЧерныйСписок` renders the blacklist badge and skips the pregnancy check entirely. Otherwise pregnancy is a **tri-state driven by property presence** — key absent renders nothing, truthy renders `pregnant`, and *any* falsy value (`false`, `null`, `0`, `""`) renders `not-pregnant`. Since 1C serializes an unset Boolean as `false`, the host must **omit the key** to show no badge.
 
 ## Context menu
 
